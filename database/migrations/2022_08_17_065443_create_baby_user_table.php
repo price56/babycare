@@ -13,14 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('baby_pees', function (Blueprint $table) {
-            $table->id();
+        Schema::create('baby_user', function (Blueprint $table) {
+            $table->unsignedBigInteger('user_id')->comment('유저 아이디');
             $table->unsignedBigInteger('baby_id')->comment('아기 아이디');
-            $table->enum('type', ['large', 'small']);
-            $table->boolean('success_yn')->default(false);
-            $table->text('description')->nullable();
-            $table->dateTime('event_time_at')->comment('변 본 시간');
-            $table->timestamps();
+            $table->foreign('user_id')
+                ->on('users')
+                ->references('id')
+                ->onDelete('CASCADE');
             $table->foreign('baby_id')
                 ->on('babies')
                 ->references('id')
@@ -35,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('baby_pees');
+        Schema::dropIfExists('baby_user');
     }
 };

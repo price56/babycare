@@ -1,0 +1,254 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "Laravel",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http:\/\/babycare.test"
+        }
+    ],
+    "paths": {
+        "\/api\/auth\/login": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "회원 로그인",
+                "description": "이메일 또는 모바일로 로그인.",
+                "requestBody": {
+                    "description": "로그인 데이이터 (mobile or email) + password 필수",
+                    "content": {
+                        "application\/json": {
+                            "schema": {
+                                "$ref": "#\/components\/schemas\/App\\OpenApi\\Schemas\\Auth\\LoginSchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "$ref": "#\/components\/responses\/App\\OpenApi\\Responses\\Auth\\LoginResponse"
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/App\\OpenApi\\Responses\\Common\\UnAuthResponse"
+                    },
+                    "422": {
+                        "$ref": "#\/components\/responses\/ValidateFail"
+                    }
+                }
+            }
+        },
+        "\/api\/auth\/join": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "회원가입",
+                "description": "회원정보를 받아서 회원가입을 한다. <br \/>\n이메일, 전화번호는 중복될수 없다. <br \/>\n비밀번호 규칙은 8-32자, 영문,숫자 조합 <br \/><br \/>\n`필수항목` <br \/><br \/>\n이름, 이메일, 전화번호, 비밀번호, 비밀번호 확인 <br \/><br \/>",
+                "requestBody": {
+                    "description": "회원 가입 데이터",
+                    "content": {
+                        "application\/json": {
+                            "schema": {
+                                "$ref": "#\/components\/schemas\/App\\OpenApi\\Schemas\\Auth\\UserJoinSchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "$ref": "#\/components\/responses\/App\\OpenApi\\Responses\\Auth\\JoinUserSuccessResponse"
+                    },
+                    "422": {
+                        "$ref": "#\/components\/responses\/ValidateFail"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "App\\OpenApi\\Schemas\\Auth\\LoginSchema": {
+                "type": "object",
+                "required": [
+                    "email",
+                    "password"
+                ],
+                "properties": {
+                    "email": {
+                        "title": "이메일",
+                        "type": "string",
+                        "example": "test@test.com"
+                    },
+                    "mobile": {
+                        "title": "전화번호",
+                        "type": "string",
+                        "example": "01000000000"
+                    },
+                    "password": {
+                        "title": "비밀번호",
+                        "type": "string",
+                        "example": "password"
+                    }
+                }
+            },
+            "App\\OpenApi\\Schemas\\Auth\\UserJoinSchema": {
+                "type": "object",
+                "required": [
+                    "email",
+                    "password",
+                    "password_confirmation",
+                    "mobile"
+                ],
+                "properties": {
+                    "name": {
+                        "title": "이름",
+                        "type": "string",
+                        "example": "박맹자"
+                    },
+                    "email": {
+                        "title": "이메일",
+                        "type": "string",
+                        "example": "test@test.com"
+                    },
+                    "mobile": {
+                        "title": "전화번호",
+                        "type": "string",
+                        "example": "01000000000"
+                    },
+                    "password": {
+                        "title": "비밀번호",
+                        "type": "string",
+                        "example": "password1234"
+                    },
+                    "password_confirmation": {
+                        "title": "비밀번호 확인",
+                        "type": "string",
+                        "example": "password1234"
+                    }
+                }
+            }
+        },
+        "responses": {
+            "App\\OpenApi\\Responses\\Auth\\LoginResponse": {
+                "description": "로그인 성공",
+                "content": {
+                    "application\/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "access_token": {
+                                    "type": "string",
+                                    "example": "5|uO0Q3k9qFZ92fCb2oMEieMG1to1bfmDUgzYlfYh9NPevTqcnE7"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "App\\OpenApi\\Responses\\Auth\\JoinUserSuccessResponse": {
+                "description": "유저 정보",
+                "content": {
+                    "application\/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "App\\OpenApi\\Responses\\Auth\\JoinUserSuccessResponse": {
+                                    "type": "object",
+                                    "properties": {
+                                        "email": {
+                                            "type": "string",
+                                            "example": "example@example.com"
+                                        },
+                                        "mobile": {
+                                            "type": "string",
+                                            "example": "01012341234"
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "박맹자"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "example": "2022-06-10 02:18:57"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "example": "2022-06-10 02:18:57"
+                                        },
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        }
+                                    }
+                                },
+                                "access_token": {
+                                    "type": "string",
+                                    "example": "8|h8yZSIadJIs31sj2EXJ7gQ9nDqiRPIKKU1UldEpIHK3NbIoKug"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "App\\OpenApi\\Responses\\Common\\UnAuthResponse": {
+                "description": "Unauthenticated",
+                "content": {
+                    "application\/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "title": "Unauthenticated",
+                                    "default": "Unauthenticated",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "ValidateFail": {
+                "description": "필수 항목 누락 및 자료형 Miss",
+                "content": {
+                    "application\/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "title": "에러 메시지",
+                                    "type": "string",
+                                    "example": "The password field is required."
+                                },
+                                "errors": {
+                                    "title": "에러 항목 Key List",
+                                    "type": "object",
+                                    "additionalProperties": {
+                                        "title": "에러 사유",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "example": {
+                                        "password": [
+                                            "The password field is required.."
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "auth",
+            "description": "인증"
+        }
+    ]
+}

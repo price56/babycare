@@ -6,6 +6,7 @@ namespace App\Models;
 use App\Casts\DateTimeStringCast;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -50,8 +51,8 @@ class User extends Authenticatable
         );
     }
 
-    public function babyPees(): HasMany
+    public function babies(): BelongsToMany
     {
-        return $this->hasMany(BabyPee::class);
+        return $this->belongsToMany(Baby::class);
     }
 }

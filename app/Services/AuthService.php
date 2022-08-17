@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\UnauthorizedException;
@@ -11,12 +12,15 @@ use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class AuthService
 {
+    /**
+     * @throws HttpException
+     */
     public function loginUser(array $authId, string $password): User
     {
         $user = User::where($authId)->first();
 
         if (! $user || ! Hash::check($password, $user->password)) {
-            throw new UnauthorizedHttpException(null, '권한이 없습니다.');
+            throw new HttpException(401, '권한이 없습니다.');
         }
 
         return $user;
@@ -31,16 +35,9 @@ class AuthService
         });
     }
 
-    public function createToken(User $user, string|null $deviceType): string
+    public function createToken(User $user): string
     {
-        return $user->createToken($deviceType ?? 'unknown')->plainTextToken;
-    }
-
-    public function setupAppType(User $user, string|null $appType = null): void
-    {
-        $user->update([
-            'app_type' => $appType
-        ]);
+        return $user->createToken('token-name')->plainTextToken;
     }
 
     public function join(array $joinUserData): User

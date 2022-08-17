@@ -17,11 +17,13 @@ class UserFactory extends Factory
      */
     public function definition()
     {
+        $randPhoneNumber = rand(1, 99999999);
+        $phoneNumber = '010' . sprintf('%08d', $randPhoneNumber);
         return [
-            'name' => fake()->name(),
-            'email' => fake()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'name' => $this->faker->name(),
+            'email' => $this->faker->unique()->safeEmail(),
+            'mobile' => $phoneNumber,
+            'password' => 'password1234', // password1234
             'remember_token' => Str::random(10),
         ];
     }
